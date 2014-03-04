@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -53,6 +54,9 @@ public class SearchRestService extends RestServiceBase {
 	@Inject
 	protected QuerySettingsParser querySettingsParser;
 
+	@Inject
+	protected Event<QuerySettings.Filters> clientRequestFilters;
+
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -69,6 +73,8 @@ public class SearchRestService extends RestServiceBase {
 			querySettings = querySettingsParser.parseUriParams(params);
 			String responseUuid = UUID.randomUUID().toString();
 
+			// make sure relevant filter configurations are prepared and cached at the request level
+			clientRequestFilters.fire(querySettings.getFilters());
 			SearchResponse searchResponse = searchService.performSearch(querySettings, responseUuid, StatsRecordType.SEARCH);
 			Map<String, String> af = searchService.getSearchResponseAdditionalFields(querySettings);
 			af.put("uuid", responseUuid);

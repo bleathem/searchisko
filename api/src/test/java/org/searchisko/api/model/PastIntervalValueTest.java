@@ -27,14 +27,14 @@ public class PastIntervalValueTest {
 
 	@Test
 	public void parseRequestParameterValue() {
-		Assert.assertNull(PastIntervalValue.parseRequestParameterValue(null));
-		Assert.assertNull(PastIntervalValue.parseRequestParameterValue(" "));
-		Assert.assertNull(PastIntervalValue.parseRequestParameterValue(" \t\n"));
+		Assert.assertNull(PastIntervalValue.parseRequestParameterValue(null, null));
+		Assert.assertNull(PastIntervalValue.parseRequestParameterValue(" ", null));
+		Assert.assertNull(PastIntervalValue.parseRequestParameterValue(" \t\n", null));
 		for (PastIntervalValue n : PastIntervalValue.values()) {
-			Assert.assertEquals(n, PastIntervalValue.parseRequestParameterValue(n.toString()));
+			Assert.assertEquals(n, PastIntervalValue.parseRequestParameterValue(n.toString(), null));
 		}
 		try {
-			PastIntervalValue.parseRequestParameterValue("unknown");
+			PastIntervalValue.parseRequestParameterValue("unknown", null);
 			Assert.fail("IllegalArgumentException expected");
 		} catch (IllegalArgumentException e) {
 			// OK

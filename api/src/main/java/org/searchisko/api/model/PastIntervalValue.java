@@ -58,10 +58,11 @@ public enum PastIntervalValue {
 	 * Convert request parameter to enum item.
 	 *
 	 * @param requestVal value from request to parse
+	 * @param filterName filterName (URL param name)
 	 * @return enum item for given request value, null if it is empty
 	 * @throws IllegalArgumentException if request value is invalid
 	 */
-	public static PastIntervalValue parseRequestParameterValue(String requestVal) throws IllegalArgumentException {
+	public static PastIntervalValue parseRequestParameterValue(String requestVal, String filterName) throws IllegalArgumentException {
 		requestVal = SearchUtils.trimToNull(requestVal);
 		if (requestVal == null)
 			return null;
@@ -69,6 +70,6 @@ public enum PastIntervalValue {
 			if (n.value.equals(requestVal))
 				return n;
 		}
-		throw new IllegalArgumentException(QuerySettings.Filters.ACTIVITY_DATE_INTERVAL_KEY);
+		throw new IllegalArgumentException(filterName);
 	}
 }
